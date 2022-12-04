@@ -1,27 +1,29 @@
-import Hero from "/components/hero"
-import Container from "/components/container"
+import Hero from '/components/hero'
+import Container from "/components/container";
 import Meta from '/components/meta'
 import {getAllPosts} from '/lib/api'
 import Posts from '/components/posts'
-import Pagination from '/components/pagination'
 import {getPlaiceholder} from '/node_modules/plaiceholder'
 import {eyecatchLocal} from '/lib/constants'
 
-export default function Home({posts}){
-    return(
+
+
+export default function Blog({posts}){
+    return (
         <Container>
-            <Meta />
-            <Hero title="CUBE" subtitle="アウトプットしていくサイト" imageOn/>
+            <Meta pageTitle="ブログ" />
+            <Hero title = "Blog" subtitle = "Recent Posts"/>
+            <Posts posts = {posts} />
         </Container>
 
-    )
-
+        )
 }
 
 export async function getStaticProps(){
-    const posts = await getAllPosts(4)
+    const posts = await getAllPosts()
 
-    for (const post of posts){
+    for(const post of posts){
+        // もしpost のeyecatch に値が入っていなかったら
         if(!post.hasOwnProperty('eyecatch')){
             post.eyecatch = eyecatchLocal
         }
@@ -29,8 +31,9 @@ export async function getStaticProps(){
         post.eyecatch.blurDataURL = base64
     }
 
+
     return{
-        props:{
+        props: {
             posts: posts,
         },
     }
